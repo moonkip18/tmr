@@ -1,0 +1,17 @@
+# Environment / secrets
+.env
+*.env
+!.env.example
+
+# Node
+node_modules/
+dist/
+out/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

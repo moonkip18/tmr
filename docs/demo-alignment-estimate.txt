@@ -1,0 +1,11 @@
+TMR night simulation — alignment estimate (not a measurement)
+==========================================================
+study session ends:        00:30 (60 min lead-in after 23:30 start)
+cue window:                00:30 - 04:30  (4.0 h cap)
+cue cadence:               every 18 min  -> 13 cues
+assumed sleep onset:       00:50
+cue volume:                low, capped
+night ends:                07:00
+
+cues landing in spindle-rich phase: 4/13
+alignment estimate: 31%  (simulation only — no real sleep data)

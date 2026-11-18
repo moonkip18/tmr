@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">synapsis</string>
+    <string name="title_activity_main">synapsis</string>
+    <string name="package_name">com.moonkip.synapsis</string>
+    <string name="custom_url_scheme">com.moonkip.synapsis</string>
+</resources>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>synapsis — TMR</title>
+<meta name="theme-color" content="#050506">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400;600&family=Fraunces:ital,opsz,wght@0,8..1200,400;0,8..1200,600;1,8..1200,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="vignette"></div>
+
+<header class="topbar">
+  <span class="wordmark">synapsis</span>
+  <button id="gear-btn" class="gear-btn" aria-label="settings">⚙</button>
+</header>
+
+<main class="stage">
+  <!-- study desk: items, learn, play -->
+  <section class="lab-section" id="desk">
+    <div class="eyebrow"><span class="dot"></span><span>study</span></div>
+    <div class="desk-grid">
+      <div class="field">
+        <label>add item <sub>(Ctrl+Shift+S plays the selected cue)</sub></label>
+        <div class="add-row">
+          <input id="item-text" type="text" placeholder="e.g. derivative of sin(x²) = 2x·cos(x²)">
+          <button id="add-btn" class="kbd-chip">add</button>
+        </div>
+      </div>
+      <div id="item-list" class="item-list"></div>
+      <div class="desk-actions">
+        <button id="learn-btn" class="kbd-chip">learn (7×)</button>
+        <div class="status-line" id="desk-status">select an item, then learn to pair its cue</div>
+      </div>
+      <div class="status-line" id="item-count"></div>
+    </div>
+  </section>
+
+  <!-- single noise: click play, repeats every 5 min -->
+  <section class="lab-section" id="noise">
+    <div class="eyebrow"><span class="dot"></span><span>night sound</span></div>
+    <div class="noise-center">
+      <div class="noise-name" id="noise-name">pink noise</div>
+      <div class="noise-row">
+        <input id="noise-vol" type="range" min="0.05" max="0.3" step="0.01" value="0.15">
+        <span class="pill" id="noise-vol-val">15</span>
+      </div>
+      <div class="noise-row">
+        <button id="noise-play" class="play-btn">play</button>
+        <span class="pill" id="noise-status">paused</span>
+      </div>
+    </div>
+    <div class="status-line">plays quietly, then repeats every 5 minutes all night.</div>
+  </section>
+
+  <!-- sleep: start TMR overnight -->
+  <section class="lab-section" id="sleep">
+    <div class="eyebrow"><span class="dot"></span><span>overnight TMR</span></div>
+    <div class="sleep-grid">
+      <div class="field">
+        <label>volume</label>
+        <input id="sleep-vol" type="range" min="0" max="100" step="1" value="42">
+        <span class="pill" id="sleep-vol-val">42</span>
+      </div>
+      <div class="field">
+        <label>lead-in silence</label>
+        <input id="sleep-lead" type="number" min="30" max="120" value="60"> min
+      </div>
+      <div class="field">
+        <label>cue interval</label>
+        <input id="sleep-int" type="number" min="5" max="30" value="12"> s
+      </div>
+      <div class="field">
+        <label>block on / off</label>
+        <input id="sleep-block-on" type="number" min="5" max="20" value="10"> min /
+        <input id="sleep-block-off" type="number" min="3" max="20" value="8"> min
+      </div>
+      <div class="field">
+        <label>cap / night</label>
+        <input id="sleep-cap" type="number" min="15" max="90" value="40"> min
+      </div>
+      <label class="toggle"><input id="sleep-mic" type="checkbox" checked><span>mic gate (auto-pause on noise)</span></label>
+      <button id="sleep-start" class="kbd-chip">start TMR</button>
+      <button id="sleep-stop" class="kbd-chip">stop</button>
+      <div class="status-line" id="sleep-status">idle — play noise while studying, then start TMR at bedtime.</div>
+    </div>
+    <div class="card callout" id="est-panel">
+      <span class="dot"></span><strong>estimated alignment (simulation)</strong>
+      <div id="est-body"></div>
+    </div>
+    <div class="card" id="night-panel">
+      <strong class="mono-label">last night</strong>
+      <div class="status-line" id="last-night">no completed session yet</div>
+    </div>
+  </section>
+
+  <!-- morning recall -->
+  <section class="lab-section" id="recall">
+    <div class="eyebrow"><span class="dot"></span><span>morning recall</span></div>
+    <div class="status-line" id="recall-status">run an overnight session first</div>
+    <div id="recall-list" class="recall-list"></div>
+  </section>
+
+  <!-- hidden settings panel -->
+  <section class="lab-section" id="settings" style="display:none">
+    <div class="eyebrow"><span class="dot"></span><span>settings</span></div>
+    <div class="setup-grid">
+      <div class="field">
+        <label>voice mode</label>
+        <select id="voice-mode">
+          <option value="tone">tone only (recommended for sleep)</option>
+          <option value="tone+text">tone + spoken text</option>
+        </select>
+      </div>
+      <label class="toggle"><input id="validation-mode" type="checkbox"><span>validation mode (cue 50% randomly)</span></label>
+      <div class="field"><label>clear data</label><button id="clear-data" class="kbd-chip">wipe localStorage</button></div>
+      <div class="status-line" id="setup-status"></div>
+      <div class="card callout">
+        <span class="dot"></span><strong>science notes</strong>
+        <ul>
+          <li>Each item owns a deterministic cue tone, persisted with the item.</li>
+          <li>Learn items first; TMR only replays what you already encoded.</li>
+          <li>Keep volume low — loud cues wake you and reverse the benefit.</li>
+          <li>Cues play in blocks (10 min on / 8 min off) after a 60-min lead-in.</li>
+          <li>The alignment readout is a simulation from population averages — never a measurement of your sleep. Everything stays on this machine.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="grain-bottom"></div>
+<script src="app.js"></script>
+</body>
+</html>

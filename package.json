@@ -1,0 +1,59 @@
+{
+  "name": "tmr-sleep-app",
+  "version": "1.0.0",
+  "description": "Targeted Memory Reactivation cue player — web core shared by Windows (.exe) and Android (.apk).",
+  "author": "synapsis",
+  "main": "electron/main.js",
+  "license": "MIT",
+  "scripts": {
+    "start:electron": "electron .",
+    "build:electron": "electron-builder",
+    "cap:init": "capacitor init com.synapsis.tmr",
+    "cap:add:android": "capacitor add android",
+    "cap:sync": "capacitor sync android",
+    "build:android": "capacitor sync android && cd android && gradlew assembleRelease",
+    "lint": "eslint www/app.js electron/main.js"
+  },
+  "build": {
+    "appId": "com.synapsis.tmr",
+    "productName": "synapsis",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/main.js",
+      "electron/preload.js",
+      "package.json",
+      "www/**/*",
+      "node_modules/electron/**/*",
+      "!**/*.map"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "portable": {
+      "artifactName": "synapsis-${version}-${arch}.exe",
+      "useZip": false
+    }
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.9",
+    "electron": "^33.0.0",
+    "electron-builder": "^26.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "node-record-lpcm16": "^1.0.1",
+    "ws": "^8.22.0"
+  }
+}

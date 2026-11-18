@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- a quiet, synapse-dot notification icon (matches the red accent) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="#c8433c"
+        android:pathData="M12 3.5c1.38 0 2.5 1.12 2.5 2.5S10.62 8.5 12 8.5s2.5-1.12 2.5-2.5S13.38 3.5 12 3.5zm0 5c-1.38 0-2.5-1.12-2.5-2.5S10.62 3.5 12 3.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+</vector>

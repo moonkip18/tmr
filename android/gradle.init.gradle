@@ -1,0 +1,31 @@
+# Auto-generated for tmr build.
+# Mirrors (dl.google.com paths are blocked in this environment) → Aliyun, which
+# mirrors the full Google Maven + Maven Central + Gradle Plugin Portal.
+allprojects {
+    repositories {
+        all { ArtifactRepository repo ->
+            def url = repo.url.toString()
+            if (repo instanceof MavenArtifactRepository) {
+                if (url == 'https://dl.google.com/dl/android/maven2/' || url == 'https://maven.google.com/' || url == 'https://google.com/') {
+                    remove repo
+                } else if (url == 'https://repo.maven.apache.org/maven2/' || url == 'https://repo1.maven.org/maven2/') {
+                    remove repo
+                } else if (url == 'https://plugins.gradle.org/m2/' || url.contains('gradle-plugin')) {
+                    remove repo
+                }
+            }
+        }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    }
+}
+allprojects {
+    buildscript {
+        repositories {
+            maven { url 'https://maven.aliyun.com/repository/google' }
+            maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+            maven { url 'https://maven.aliyun.com/repository/central' }
+        }
+    }
+}

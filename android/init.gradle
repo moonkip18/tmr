@@ -1,0 +1,57 @@
+// init.gradle — mirror Google/Maven Central/GradlePluginPortal to Aliyun because
+// dl.google.com paths are unreachable from this environment. Applied to every
+// project AND every buildscript (subprojects like :capacitor-android bring their
+// own google(); this removes it so AGP/deps resolve from the mirror).
+allprojects {
+    buildscript {
+        repositories {
+            all { ArtifactRepository repo ->
+                if (repo instanceof org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
+                    def u = repo.url.toString()
+                    if (u == 'https://dl.google.com/dl/android/maven2/' || u == 'https://maven.google.com/' ||
+                        u == 'https://repo.maven.apache.org/maven2/' || u == 'https://repo1.maven.org/maven2/' ||
+                        u == 'https://plugins.gradle.org/m2/') {
+                        remove repo
+                    }
+                }
+            }
+            maven { url 'https://maven.aliyun.com/repository/google' }
+            maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+            maven { url 'https://maven.aliyun.com/repository/central' }
+        }
+    }
+    repositories {
+        all { ArtifactRepository repo ->
+            if (repo instanceof org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
+                def u = repo.url.toString()
+                if (u == 'https://dl.google.com/dl/android/maven2/' || u == 'https://maven.google.com/' ||
+                    u == 'https://repo.maven.apache.org/maven2/' || u == 'https://repo1.maven.org/maven2/' ||
+                    u == 'https://plugins.gradle.org/m2/') {
+                    remove repo
+                }
+            }
+        }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+    }
+}
+settingsEvaluated { settings ->
+    settings.pluginManagement {
+        repositories {
+            all { ArtifactRepository repo ->
+                if (repo instanceof org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
+                    def u = repo.url.toString()
+                    if (u == 'https://dl.google.com/dl/android/maven2/' || u == 'https://maven.google.com/' ||
+                        u == 'https://repo.maven.apache.org/maven2/' || u == 'https://plugins.gradle.org/m2/') {
+                        remove repo
+                    }
+                }
+            }
+            maven { url 'https://maven.aliyun.com/repository/google' }
+            maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+            maven { url 'https://maven.aliyun.com/repository/central' }
+        }
+    }
+}
